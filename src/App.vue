@@ -1,21 +1,21 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+<script setup lang="ts" >
+import {usePreload } from 'lingo3d-vue'
+import { getRoleModel } from '@/model/role'
+import Loading from '@/components/Loading.vue'
+import Join from './views/Join.vue';
+import useUserStore from '@/store/modules/player'
+import Game from './views/Game.vue';
+const userStore = useUserStore()
+const progress = usePreload([
+  "skybox.jpg",
+  "map.glb",
+  ...getRoleModel(),
+], "55.4mb")
 </script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <Loading v-if="progress !== 100" :progress="progress" />
+  <Join v-else-if="progress == 100 && !userStore.isJoin"/>
+  <Game v-else-if="userStore.isJoin"/>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less" >
 </style>
