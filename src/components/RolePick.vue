@@ -7,7 +7,6 @@
 </template>
 <script lang="ts" setup>
 import { roleList } from '@/model/role.ts'
-import { defineEmits } from 'vue'
 defineProps({
     role: {
         default: "",

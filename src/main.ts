@@ -6,5 +6,4 @@ import './index.less'
 import { settings } from "lingo3d"
 import {createPinia} from 'pinia'
 const pinia = createPinia()
-settings.autoMout = false
 createApp(App).use(ElementPlus).use(pinia).mount('#app')

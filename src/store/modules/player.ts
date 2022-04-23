@@ -6,7 +6,8 @@ export default defineStore({
       id: '',
       name: '',
       role:'',
-      isJoin:false
+      isJoin:false,
+      usersData:[]
     }
   }
 })
