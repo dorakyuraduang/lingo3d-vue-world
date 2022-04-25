@@ -16,11 +16,12 @@
 <script lang="ts" setup>
 import RolePick from '@/components/RolePick.vue'
 import { reactive, ref } from 'vue'
+import useMessage from '@/hooks/useMessage';
 import { FormInstance, FormRules, ElMessage } from 'element-plus'
 import socket from '@/utils/socket';
 import useUserStore from '@/store/modules/player'
 const ruleFormRef = ref<FormInstance>()
-const userStore=useUserStore()
+const userStore = useUserStore()
 const formData = reactive({
   name: '',
   role: ""
@@ -44,31 +45,19 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       socket.emit('join', formData)
     } else {
-      ElMessage({
-        grouping: true,
-        message: '加入游戏失败',
-        type: 'warning',
-      })
+      useMessage('加入游戏失败')
     }
   })
 }
-socket.on('join', ({ code, name, role,id }) => {
+socket.on('join', ({ code, name, role, id }) => {
   if (code == 200) {
-    userStore.id=id
-    userStore.name=name
-    userStore.role=role
-    userStore.isJoin=true
-    ElMessage({
-      grouping: true,
-      message: '成功加入游戏',
-      type: 'success',
-    })
+    userStore.id = id
+    userStore.name = name
+    userStore.role = role
+    userStore.isJoin = true
+    useMessage('成功加入游戏')
   } else {
-    ElMessage({
-      grouping: true,
-      message: '加入游戏失败',
-      type: 'warning',
-    })
+    useMessage('加入游戏失败')
   }
 })
 </script>

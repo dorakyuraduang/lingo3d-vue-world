@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 #app {
   width: 100vw;
   height: 100vh;
@@ -12,4 +13,29 @@
   justify-content: center;
   background-image: url(bg.jpg);
   background-size: cover;
+}
+
+.el-message {
+  transition: none !important;
+  padding: 0 15px;
+  min-width:0 !important;
+  height: 30px;
+  border-radius: 20px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.557);
+  >div{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    >.el-avatar{
+      margin-right:10px ;
+    }
+  }
+ .el-message__content{
+  color: #fff !important;
+ 
+ }
+  >.el-icon {
+    display: none;
+  }
 }

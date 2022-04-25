@@ -10,10 +10,15 @@
     :animations="getRoleAnimetions(userData.role)"
     :animation="userData.motion || 'idle'"
   >
+     <Cube :physics="false" :visible="false"    :y="65" >
+    <HTML>
+      <div class="name"> {{userData.name}}</div>
+    </HTML>
+    </Cube>
   </Model>
 </template>
 <script setup lang="ts">
-import {Model} from 'lingo3d-vue'
+import {Model,Cube,HTML} from 'lingo3d-vue'
 import {getRoleAnimetions } from '@/model/role'
 const props=defineProps({
  userData:{
@@ -21,5 +26,9 @@ const props=defineProps({
     type:Object
   }
 })
-console.log(props.userData)
 </script>
+<style>
+.name{
+  transform: translateX(-50%);
+}
+</style>

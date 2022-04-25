@@ -1,20 +1,27 @@
 <template>
-  <Model ref="model"  :src="`${userStore.role}/untitled.fbx`" physics="character"
+  <Model ref="model" :src="`${userStore.role}/untitled.fbx`" physics="character"
     :animations="getRoleAnimetions(userStore.role)" :animation="pose.value">
+    <Cube :physics="false" :visible="false" :width="model?.width" :y="model?.height * 0.65">
+      <HTML>
+      <div class="name"> {{ userStore.name }}</div>
+
+      </HTML>
+    </Cube>
   </Model>
   <Chat v-model:isShow="chatShow" />
   <Keyboard @key-press="handleKeyPress" @key-up="handleKeyUp" @key-down="handleKeyDown" />
 </template>
 <script setup lang="ts">
-import { Model, types, Keyboard, useKeyboard } from 'lingo3d-vue';
+import { Model, types, HTML, Keyboard, useKeyboard, Cube } from 'lingo3d-vue';
 import poseChine from '@/stateMachines/poseMachine'
 import { useMachine } from '@xstate/vue'
 import useUserStore from '@/store/modules/player'
 import { ref, onUnmounted } from 'vue';
 import socket from '@/utils/socket'
 import { getRoleAnimetions } from '@/model/role'
+import { recStart, recStop } from '@/utils/recoder'
 import Chat from './Chat.vue';
-const chatShow=ref<boolean>(false)
+const chatShow = ref<boolean>(false)
 enum keyDown {
   w = 'KEY_W_DOWN',
   a = 'KEY_A_DOWN',
@@ -22,13 +29,15 @@ enum keyDown {
   d = 'KEY_D_DOWN',
   Shift = 'KEY_SHIFT_DOWN',
   Space = 'KEY_SPACE_DOWN',
+  e = 'KEY_E_DOWN'
 }
 enum keyUp {
   w = 'KEY_W_UP',
   a = 'KEY_A_UP',
   s = 'KEY_S_UP',
   d = 'KEY_D_UP',
-  Shift = 'KEY_SHIFT_UP'
+  Shift = 'KEY_SHIFT_UP',
+  e = 'KEY_E_UP'
 }
 const model = ref<types.Model>()
 const mykey = useKeyboard()
@@ -99,10 +108,27 @@ const { state: pose, send } = useMachine(poseChine, {
   }
 });
 const userStore = useUserStore()
+socket.on('audio', ({ id, blob: buffer }) => {
+  if (id !== userStore.id) {
+    const blob = new Blob([buffer], { type: 'audio/wav' })
+    const url = URL.createObjectURL(blob)
+    let audio: HTMLAudioElement | null = new Audio(url);
+    audio.play()
+    audio.addEventListener('ended', () => {
+      URL.revokeObjectURL(url)
+      audio = null
+    }, false);
+  }
+})
 const handleKeyUp = (key: string) => {
   if (keyUp[key]) {
+   
     send(keyUp[key])
   } else {
+    if (key == 'v') {
+        userStore.isRed=false
+      recStop()
+    }
     send('KEY_NONE_NONE')
   }
 }
@@ -117,10 +143,20 @@ const handleKeyDown = (key: string) => {
   if (key === 'Space') {
     send('KEY_SPACE_DOWN')
   } else if (key === 't') {
-  chatShow.value=!chatShow.value
+    chatShow.value = !chatShow.value
+  } else if (key === 'v'&&!userStore.isRed) {
+    userStore.isRed=true
+    recStart()
   }
 }
 onUnmounted(() => {
   clearInterval(updateState)
 })
 </script>
+<style>
+.name {
+  color: #fff;
+  font-size: 20px;
+  transform: translateX(-50%);
+}
+</style>

@@ -7,7 +7,9 @@ export default defineStore({
       name: '',
       role:'',
       isJoin:false,
-      usersData:[]
+      usersData:[],
+      messageList:[],
+      isRed:false
     }
   }
 })

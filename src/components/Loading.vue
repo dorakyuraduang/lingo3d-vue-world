@@ -59,7 +59,6 @@ progress:{
   from {
     background-position: 40px 0;
   }
-
   to {
     background-position: 0 0;
   }

@@ -1,8 +1,6 @@
 import Recorder from 'recorder-core/recorder.wav.min'
 import socket from '@/utils/socket'
-import state from '@/store'
 import useUserStore from '@/store/modules/player'
-const userStore = useUserStore()
 let rec:any;
 let SendInterval:number=300 //发送间隔
 let sampleRate:number=16000 //采样率
@@ -71,6 +69,7 @@ const RealTimeSendTry=(rec:any,isClose:boolean)=>{ //实时发送函数
 };
 //=====数据传输函数==========
 const TransferUpload=(number:number,blobOrNull:any|null,duration:any,blobRec:any,isClose:Boolean)=>{
+	const userStore = useUserStore()
 	transferUploadNumberMax=Math.max(transferUploadNumberMax,number);
 	if(blobOrNull){
 		var blob=blobOrNull;
