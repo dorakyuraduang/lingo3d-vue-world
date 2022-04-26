@@ -18,7 +18,7 @@ import { Model, types, HTML, Keyboard, useKeyboard, Cube } from 'lingo3d-vue';
 import poseChine from '@/stateMachines/poseMachine'
 import { useMachine } from '@xstate/vue'
 import useUserStore from '@/store/modules/player'
-import { ref, onUnmounted } from 'vue';
+import { ref, onUnmounted,onMounted } from 'vue';
 import socket from '@/utils/socket'
 import { getRoleAnimetions } from '@/model/role'
 import { recStart, recStop } from '@/utils/recoder'
@@ -43,7 +43,6 @@ enum keyUp {
   e = 'KEY_E_UP'
 }
 const userStore = useUserStore()
-console.log(userStore)
 const model = ref<types.Model>()
 const mykey = useKeyboard()
 const updateState = setInterval(() => {

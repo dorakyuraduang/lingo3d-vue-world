@@ -1,6 +1,6 @@
 <template>
   <World>
-    <div class="ms">{{`ping : ${ms}`}}</div>
+    <div class="ms">{{ `ping : ${ms}` }}</div>
     <el-button ref="buttonRef" v-click-outside="onClickOutside" type="primary" class="bg-blue-400 help" circle>
       ?
     </el-button>
@@ -38,7 +38,11 @@ import { ClickOutside as vClickOutside } from 'element-plus'
 import useUserStore from '@/store/modules/player'
 import User from '@/components/User.vue'
 const userStore = useUserStore()
-const ms=ref<number>(0)
+const ms = ref<number>(0)
+const isMobile = ref(false)
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  isMobile.value = true
+}
 document.getElementById('app')!.style.backgroundImage = 'none'
 socket.on('update', (data: any) => {
   delete data[userStore.id]
@@ -53,10 +57,19 @@ socket.on('update', (data: any) => {
     userStore.usersData = []
   }
 })
-socket.on('ms',(time)=>{
-  ms.value=new Date().getTime()-time
+setInterval(()=>{
+socket.emit('send',Date.now())
+},1000)
+socket.on('packet', (time) => {
+  const clientPacke=Date.now()
+  ms.value = Math.round(((clientPacke-time.clientSend) - ( time.serverSend-time.serverPacke)) / 2)
 })
 const movie = document.createElement('video')
+// movie.src = import.meta.env.VITE_APP_MOVIE_URL
+// movie.crossOrigin = 'Anonymous'
+// movie.currentTime = (new Date().getTime() % (995 * 1000)) / 1000
+// movie.autoplay = true
+// movie.loop = true
 const flvPlayer = flvjs.createPlayer({
   type: 'flv',
   url: import.meta.env.VITE_APP_MOVIE_URL,
@@ -73,13 +86,14 @@ const onClickOutside = () => {
 }
 </script>
 <style lang="less" scoped>
-.ms{
-  top:10px ;
+.ms {
+  top: 10px;
   left: 20px;
   color: #fff;
   position: absolute;
   z-index: 999;
 }
+
 .help {
   position: absolute;
   right: 20px;
@@ -87,11 +101,13 @@ const onClickOutside = () => {
   font-size: 20px;
   width: 40px;
   height: 40px;
-  &-text{
-   padding: 0 5px;
+
+  &-text {
+    padding: 0 5px;
     color: #fff;
     color: #000;
-    >*{
+
+    >* {
       margin: 3px 0;
     }
   }

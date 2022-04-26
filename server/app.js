@@ -1,6 +1,8 @@
 
  const NodeMediaServer=require('node-media-server')
+const videoList=[
 
+]
 const config = {
   rtmp: {
     port: 7725,
@@ -71,19 +73,24 @@ io.on('connection', (socket) => {
         blob
       })
     })
-    socket.on('disconnect', () => {
-      io.emit("message", {
-        id: 'system',
-        msg: `${name}退出世界`,
-        type: 0
-      })
-      delete users[socket.id]
-    })
-  })
-})
-setInterval(() => {
-  io.emit("update", users)
-}, 16)
-setInterval(() => {
-  io.emit("ms", new Date().getTime())
-}, 1000)
+    socket.on('send',(time)=>{
+      const serverSend=Date.now()
+       socket.emit('packet',{
+         serverPacke:Date.now(),
+         serverSend,
+         clientSend:time
+       })
+     })
+     socket.on('disconnect', () => {
+       io.emit("message", {
+         id: 'system',
+         msg: `${name}退出世界`,
+         type: 0
+       })
+       delete users[socket.id]
+     })
+   })
+ })
+ setInterval(() => {
+   io.emit("update", users)
+ }, 16)

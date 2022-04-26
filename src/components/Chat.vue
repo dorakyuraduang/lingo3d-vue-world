@@ -57,6 +57,7 @@ socket.on('message', (msg: any) => {
     userStore.messageList.shift()
   }
   if (msg.type === 0) {
+    useMessage(msg.msg)
   } else if (msg.type === 1) {
     if (msg.id !== userStore.id) {
       useMessage(msg.name + ' 说：' + msg.msg, msg.role)
