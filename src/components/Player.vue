@@ -1,10 +1,12 @@
 <template>
   <Model ref="model" :src="`${userStore.role}/untitled.fbx`" physics="character"
     :animations="getRoleAnimetions(userStore.role)" :animation="pose.value">
-    <Cube :physics="false" :visible="false" :width="model?.width" :y="model?.height * 0.65">
+    <Cube :physics="false" :visible="false" :width="model?.width" :y="model?.height * 0.5">
       <HTML>
-      <div class="name"> {{ userStore.name }}</div>
-
+      <div class="user-box">
+        <BubbleBox />
+        <p class="name">{{ userStore.name }}</p>
+      </div>
       </HTML>
     </Cube>
   </Model>
@@ -20,6 +22,7 @@ import { ref, onUnmounted } from 'vue';
 import socket from '@/utils/socket'
 import { getRoleAnimetions } from '@/model/role'
 import { recStart, recStop } from '@/utils/recoder'
+import BubbleBox from './BubbleBox.vue';
 import Chat from './Chat.vue';
 const chatShow = ref<boolean>(false)
 enum keyDown {
@@ -39,6 +42,8 @@ enum keyUp {
   Shift = 'KEY_SHIFT_UP',
   e = 'KEY_E_UP'
 }
+const userStore = useUserStore()
+console.log(userStore)
 const model = ref<types.Model>()
 const mykey = useKeyboard()
 const updateState = setInterval(() => {
@@ -49,7 +54,8 @@ const updateState = setInterval(() => {
     rotationX: model.value!.rotationX,
     rotationY: model.value!.rotationY,
     rotationZ: model.value!.rotationZ,
-    motion: pose.value.value
+    motion: pose.value.value,
+    message:userStore.message
   })
 }, 16)
 const { state: pose, send } = useMachine(poseChine, {
@@ -107,7 +113,7 @@ const { state: pose, send } = useMachine(poseChine, {
     }
   }
 });
-const userStore = useUserStore()
+
 socket.on('audio', ({ id, blob: buffer }) => {
   if (id !== userStore.id) {
     const blob = new Blob([buffer], { type: 'audio/wav' })
@@ -122,11 +128,11 @@ socket.on('audio', ({ id, blob: buffer }) => {
 })
 const handleKeyUp = (key: string) => {
   if (keyUp[key]) {
-   
+
     send(keyUp[key])
   } else {
     if (key == 'v') {
-        userStore.isRed=false
+      userStore.isRed = false
       recStop()
     }
     send('KEY_NONE_NONE')
@@ -144,8 +150,8 @@ const handleKeyDown = (key: string) => {
     send('KEY_SPACE_DOWN')
   } else if (key === 't') {
     chatShow.value = !chatShow.value
-  } else if (key === 'v'&&!userStore.isRed) {
-    userStore.isRed=true
+  } else if (key === 'v' && !userStore.isRed) {
+    userStore.isRed = true
     recStart()
   }
 }
@@ -153,10 +159,3 @@ onUnmounted(() => {
   clearInterval(updateState)
 })
 </script>
-<style>
-.name {
-  color: #fff;
-  font-size: 20px;
-  transform: translateX(-50%);
-}
-</style>

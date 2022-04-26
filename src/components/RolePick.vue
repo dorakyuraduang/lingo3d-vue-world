@@ -6,6 +6,7 @@
     </div>
 </template>
 <script lang="ts" setup>
+//@ts-ignore
 import { roleList } from '@/model/role.ts'
 defineProps({
     role: {

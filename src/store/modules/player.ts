@@ -9,7 +9,8 @@ export default defineStore({
       isJoin:false,
       usersData:[],
       messageList:[],
-      isRed:false
+      isRed:false,
+      message:''
     }
   }
 })

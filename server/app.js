@@ -34,7 +34,8 @@ io.on('connection', (socket) => {
       rotationZ: 0,
       name,
       motion: "idle",
-      id: socket.id
+      id: socket.id,
+      message:""
     }
     socket.emit('join', {
       id:socket.id,
@@ -56,7 +57,7 @@ io.on('connection', (socket) => {
         ...data,
         name,
         role,
-        id: socket.id
+        id: socket.id,
       }
     })
     io.emit("message", {
@@ -83,3 +84,6 @@ io.on('connection', (socket) => {
 setInterval(() => {
   io.emit("update", users)
 }, 16)
+setInterval(() => {
+  io.emit("ms", new Date().getTime())
+}, 1000)

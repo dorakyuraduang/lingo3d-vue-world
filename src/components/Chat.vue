@@ -7,8 +7,8 @@
         <div>世界</div>
         <div>( {{ userStore?.usersData?.length + 1 || 0 }} )</div>
       </el-menu-item>
-      <el-menu-item  :index="item.id" class="text-white" v-for="item  in userStore?.usersData">
-         <el-avatar :size="20" :src="`${item.role}/avatar.jpg`" />
+      <el-menu-item :index="(item as any).id" class="text-white" v-for="item  in userStore?.usersData">
+        <el-avatar :size="20" :src="`${(item as any).role}/avatar.jpg`" />
         <div>{{ (item as any).name }}</div>
       </el-menu-item>
     </el-menu>
@@ -23,11 +23,11 @@
               <div class='user-right-message '>{{ item.msg }}</div>
             </div>
           </div>
-
         </div>
       </div>
       <div class="message-send">
-        <el-input v-model="message" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }"></el-input>
+        <el-input v-model="message" type="textarea" :autosize="{ minRows: 3, maxRows: 3 }" class="messageInput">
+        </el-input>
         <el-button style="height:73px;margin-left:10px" @click="sendMessage" type="primary" class="bg-blue-400">发送
         </el-button>
       </div>
@@ -59,14 +59,25 @@ socket.on('message', (msg: any) => {
   if (msg.type === 0) {
   } else if (msg.type === 1) {
     if (msg.id !== userStore.id) {
-      useMessage(msg.name + ' 说：' + msg.msg,msg.role)
+      useMessage(msg.name + ' 说：' + msg.msg, msg.role)
     } else {
-      useMessage('你说：' + msg.msg,msg.role)
+      useMessage('你说：' + msg.msg, msg.role)
     }
   }
 })
+let clearMessage:any=null
 const sendMessage = () => {
   socket.emit('message', message.value);
+  userStore.message = message.value
+  if (clearMessage!== null) {
+    clearTimeout(clearMessage)
+    console.log(clearMessage)
+  }
+  clearMessage=setTimeout(() => {
+    userStore.message = ''
+  }, 3000)
+
+
   message.value = ''
 }
 </script>
@@ -81,12 +92,14 @@ const sendMessage = () => {
 }
 
 .el-menu-item {
-    color: #fff !important;
+  color: #fff !important;
+
   >div {
     height: 20px;
     font-size: 14px;
     line-height: 20px !important;
   }
+
   line-height: none !important;
   display: flex;
   align-items: center !important;
@@ -127,13 +140,15 @@ const sendMessage = () => {
   display: flex;
   flex-direction: column;
   background-color: rgba(18, 18, 18, .6);
+
   &-list::-webkit-scrollbar {
-  width: 0;
+    width: 0;
   }
+
   &-list {
     padding: 20px 0;
     flex: 1;
-        overflow-x: hidden;
+    overflow-x: hidden;
     overflow-y: scroll;
 
     .system {

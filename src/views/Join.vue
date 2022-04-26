@@ -9,7 +9,7 @@
       <role-pick v-model:role="formData.role" />
     </el-form-item>
     <el-form-item class="join-btn">
-      <el-button type="primary" @click="submitForm(ruleFormRef)">加入游戏</el-button>
+      <el-button type="primary"  class="bg-blue-400" @click="submitForm(ruleFormRef)">加入游戏</el-button>
     </el-form-item>
   </el-form>
 </template>

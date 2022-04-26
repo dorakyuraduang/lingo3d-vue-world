@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +14,7 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  background-image: url(bg.jpg);
+  background-image: url(../public/bg.jpg);
   background-size: cover;
 }
 
@@ -38,4 +41,15 @@
   >.el-icon {
     display: none;
   }
+}
+.user-box {
+  >.name {
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+}
+  display: flex;
+  transform: translate(-50%, -100%);
+  align-items: center;
+  flex-direction: column;
 }

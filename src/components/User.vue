@@ -12,7 +12,10 @@
   >
      <Cube :physics="false" :visible="false"    :y="65" >
     <HTML>
-      <div class="name"> {{userData.name}}</div>
+        <div class="user-box">
+        <!-- HTML组件里的数据会失去响应式,暂时无法实现对话框显示 -->
+        <p class="name">{{ userData.name }}</p>
+      </div>
     </HTML>
     </Cube>
   </Model>
@@ -20,6 +23,7 @@
 <script setup lang="ts">
 import {Model,Cube,HTML} from 'lingo3d-vue'
 import {getRoleAnimetions } from '@/model/role'
+import BubbleBox from '@/components/BubbleBox.vue'
 const props=defineProps({
  userData:{
     default:null,
@@ -27,8 +31,3 @@ const props=defineProps({
   }
 })
 </script>
-<style>
-.name{
-  transform: translateX(-50%);
-}
-</style>
