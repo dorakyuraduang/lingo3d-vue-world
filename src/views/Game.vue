@@ -20,7 +20,7 @@
       </Find>
     </Model>
     <ThirdPersonCamera active mouseControl>
-      <Player />
+      <Player  />
     </ThirdPersonCamera>
     <template v-if="userStore.usersData">
       <User v-for="item in  (userStore.usersData as any)" :key="item.id" :user-data="item" />

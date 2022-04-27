@@ -77,8 +77,6 @@ const sendMessage = () => {
   clearMessage=setTimeout(() => {
     userStore.message = ''
   }, 3000)
-
-
   message.value = ''
 }
 </script>

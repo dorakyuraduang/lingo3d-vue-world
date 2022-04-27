@@ -1,13 +1,8 @@
 <template>
   <Model ref="model" :src="`${userStore.role}/untitled.fbx`" physics="character"
     :animations="getRoleAnimetions(userStore.role)" :animation="pose.value">
-    <Cube :physics="false" :visible="false" :width="model?.width" :y="model?.height * 0.5">
-      <HTML>
-      <div class="user-box">
-        <BubbleBox />
-        <p class="name">{{ userStore.name }}</p>
-      </div>
-      </HTML>
+    <Cube :physics="false" :visible="false" :width="model?.width" :y="55">
+    <UserBox  :name="userStore.name" :message="userStore.message" :isRed="userStore.isRed" ></UserBox>
     </Cube>
   </Model>
   <Chat v-model:isShow="chatShow" />
@@ -18,11 +13,11 @@ import { Model, types, HTML, Keyboard, useKeyboard, Cube } from 'lingo3d-vue';
 import poseChine from '@/stateMachines/poseMachine'
 import { useMachine } from '@xstate/vue'
 import useUserStore from '@/store/modules/player'
-import { ref, onUnmounted,onMounted } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import socket from '@/utils/socket'
 import { getRoleAnimetions } from '@/model/role'
 import { recStart, recStop } from '@/utils/recoder'
-import BubbleBox from './BubbleBox.vue';
+import UserBox from './UserBox.vue';
 import Chat from './Chat.vue';
 const chatShow = ref<boolean>(false)
 enum keyDown {
@@ -43,6 +38,7 @@ enum keyUp {
   e = 'KEY_E_UP'
 }
 const userStore = useUserStore()
+console.log(userStore)
 const model = ref<types.Model>()
 const mykey = useKeyboard()
 const updateState = setInterval(() => {
@@ -54,7 +50,8 @@ const updateState = setInterval(() => {
     rotationY: model.value!.rotationY,
     rotationZ: model.value!.rotationZ,
     motion: pose.value.value,
-    message:userStore.message
+    message:userStore.message,
+    isRed:userStore.isRed
   })
 }, 16)
 const { state: pose, send } = useMachine(poseChine, {
