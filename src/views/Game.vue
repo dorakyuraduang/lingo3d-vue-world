@@ -15,9 +15,7 @@
         </div>
       </template>
     </el-popover>
-    <Model src="map.glb" :scale="6" physics="map">
-      <Find name="Material2.007" :texture="movie">
-      </Find>
+    <Model src="map.glb" :scale="8" physics="map" >
     </Model>
     <ThirdPersonCamera active mouseControl>
       <Player  />
@@ -32,16 +30,16 @@
 import flvjs from 'flv.js'
 import socket from '@/utils/socket'
 import Player from '@/components/Player.vue'
-import { World, Model, ThirdPersonCamera, Skybox, Find } from 'lingo3d-vue';
+import { World, Model, ThirdPersonCamera,HTML, Skybox, Find } from 'lingo3d-vue';
 import { ref, unref } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import useUserStore from '@/store/modules/player'
 import User from '@/components/User.vue'
 const userStore = useUserStore()
 const ms = ref<number>(0)
-const isMobile = ref(false)
+console.log(navigator.userAgent)
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-  isMobile.value = true
+  userStore.isMobile = true
 }
 document.getElementById('app')!.style.backgroundImage = 'none'
 socket.on('update', (data: any) => {
@@ -64,21 +62,18 @@ socket.on('packet', (time) => {
   const clientPacke=Date.now()
   ms.value = Math.round(((clientPacke-time.clientSend) - ( time.serverSend-time.serverPacke)) / 2)
 })
-const movie = document.createElement('video')
-// movie.src = import.meta.env.VITE_APP_MOVIE_URL
-// movie.crossOrigin = 'Anonymous'
-// movie.currentTime = (new Date().getTime() % (995 * 1000)) / 1000
-// movie.autoplay = true
-// movie.loop = true
-const flvPlayer = flvjs.createPlayer({
-  type: 'flv',
-  url: import.meta.env.VITE_APP_MOVIE_URL,
-  isLive: true
-});
-//@ts-ignore
-flvPlayer.attachMediaElement(movie);
-flvPlayer.load();
-flvPlayer.play();
+// const movie=document.createElement('iframe')
+
+// const movie = document.createElement('video')
+// const flvPlayer = flvjs.createPlayer({
+//   type: 'flv',
+//   url: import.meta.env.VITE_APP_MOVIE_URL,
+//   isLive: true
+// });
+// //@ts-ignore
+// flvPlayer.attachMediaElement(movie);
+// flvPlayer.load();
+// flvPlayer.play();
 const buttonRef = ref()
 const popoverRef = ref()
 const onClickOutside = () => {

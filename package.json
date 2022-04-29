@@ -16,11 +16,13 @@
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
     "lingo3d-vue": "^1.0.33",
+    "nipplejs": "^0.9.1",
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",
     "recorder-core": "^1.2.22030501",
     "recorder-js": "^1.0.7",
     "socket.io-client": "^4.4.1",
+    "vconsole": "^3.14.6",
     "vue": "^3.2.25",
     "xstate": "^4.31.0"
   },

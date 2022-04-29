@@ -9,8 +9,9 @@
     :rotationZ="userData.rotationZ"
     :animations="getRoleAnimetions(userData.role)"
     :animation="userData.motion || 'idle'"
+    @click="socket.emit('shoot',userData.id)"
   >
-     <Cube :physics="false" :visible="false" :y="55" >
+     <Cube :physics="false" :visible="false" :y="52" >
      <UserBox :name="userData.name"  :message="userData.message"  :isRed="userData.isRed" />
     </Cube>
   </Model>
@@ -19,6 +20,7 @@
 import {Model,Cube,HTML} from 'lingo3d-vue'
 import {getRoleAnimetions } from '@/model/role'
 import BubbleBox from '@/components/BubbleBox.vue'
+import socket from '@/utils/socket';
 import UserBox from './UserBox.vue';
 const props=defineProps({
  userData:{

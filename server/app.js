@@ -1,8 +1,6 @@
 
  const NodeMediaServer=require('node-media-server')
-const videoList=[
-
-]
+const socketList={}
 const config = {
   rtmp: {
     port: 7725,
@@ -26,6 +24,7 @@ const io = require("socket.io")(4399, {
 let users = {};
 io.on('connection', (socket) => {
   socket.on('join', ({ name, role }) => {
+    socketList[socket.id]=socket
     users[socket.id] = {
       x: 400,
       y: 0,
@@ -88,6 +87,10 @@ io.on('connection', (socket) => {
          type: 0
        })
        delete users[socket.id]
+       delete  socketList[socket.id]
+     })
+     socket.on('shoot',(id)=>{
+      socketList[id].emit('shoot')
      })
    })
  })

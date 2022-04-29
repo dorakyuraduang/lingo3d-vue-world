@@ -11,6 +11,7 @@ export default createMachine({
        KEY_SHIFT_W_DOWN:"run",
        KEY_NONE_DOWN:'idle',
        KEY_E_DOWN:'sit',
+       SHOOT:'shoot',
       },entry:'enterIdle'
 
     }, "run": {
@@ -23,11 +24,13 @@ export default createMachine({
         KEY_SHIFT_UP:"idle",
         KEY_NONE_DOWN:'idle',
         KEY_E_DOWN:'sit',
+        SHOOT:'shoot',
       },entry:'enterRun'
 
     }, "jump": {
       on:{
         JUMP_OVER:'idle',
+        SHOOT:'shoot',
       },entry:'enterJump'
 
     }, "left": {
@@ -35,6 +38,7 @@ export default createMachine({
         KEY_W_DOWN:"walking",
         KEY_D_DOWN:"right",
         KEY_S_DOWN:"back",
+        SHOOT:'shoot',
         KEY_SPACE_DOWN:"jump",
         KEY_NONE_DOWN:'idle',
         KEY_A_UP:"idle",
@@ -45,6 +49,7 @@ export default createMachine({
       on:{
         KEY_W_DOWN:"walking",
         KEY_A_DOWN:"left",
+        SHOOT:'shoot',
         KEY_S_DOWN:"back",
         KEY_SPACE_DOWN:"jump",
         KEY_SHIFT_W_DOWN:"run",
@@ -56,6 +61,7 @@ export default createMachine({
     }, "walking": {
       on:{
         KEY_W_UP:"idle",
+        SHOOT:'shoot',
         KEY_A_DOWN:"left",
         KEY_D_DOWN:"right",
         KEY_S_DOWN:"back",
@@ -68,6 +74,7 @@ export default createMachine({
     }, "back": {
       on:{
         KEY_W_DOWN:"walking",
+        SHOOT:'shoot',
         KEY_A_DOWN:"left",
         KEY_D_DOWN:"right",
         KEY_S_UP:"idle",
@@ -85,6 +92,17 @@ export default createMachine({
         KEY_S_DOWN:"back",
         KEY_SPACE_DOWN:"jump",
         KEY_SHIFT_W_DOWN:"run",
+        KEY_NONE_DOWN:'idle'
+      }
+    },'shoot':{
+      on:{
+        KEY_W_DOWN:"walking",
+        KEY_A_DOWN:"left",
+        KEY_D_DOWN:"right",
+        KEY_S_DOWN:"back",
+        KEY_SPACE_DOWN:"jump",
+        KEY_SHIFT_W_DOWN:"run",
+        KEY_NONE_DOWN:'idle'
       }
     }
   },

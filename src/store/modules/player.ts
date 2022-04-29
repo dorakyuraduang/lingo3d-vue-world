@@ -10,7 +10,9 @@ export default defineStore({
       usersData:[],
       messageList:[],
       isRed:false,
-      message:''
+      message:'',
+      hp:100,
+      isMobile:false
     }
   }
 })

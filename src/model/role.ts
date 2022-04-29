@@ -1,6 +1,6 @@
 
 export const roleList=['kanna','girl1']
-export const poseList=['untitled','idle','walking','left','right','back','jump','run','sit']
+export const poseList=['untitled','idle','walking','left','right','back','jump','run','sit','shoot']
 export const getRoleAnimetions=(role:string)=>{
   const animetions:any={}
   for(let v of poseList){
