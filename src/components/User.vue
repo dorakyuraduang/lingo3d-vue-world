@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import {Model,Cube,HTML} from 'lingo3d-vue'
 import {getRoleAnimetions } from '@/model/role'
-import BubbleBox from '@/components/BubbleBox.vue'
 import socket from '@/utils/socket';
 import UserBox from './UserBox.vue';
 const props=defineProps({
