@@ -5,6 +5,6 @@ import 'element-plus/dist/index.css'
 import './index.less'
 import {createPinia} from 'pinia'
 import Vconsole from 'vconsole';
-const vConsole = new Vconsole()
+// const vConsole = new Vconsole()
 const pinia = createPinia()
 createApp(App).use(ElementPlus).use(pinia).mount('#app')

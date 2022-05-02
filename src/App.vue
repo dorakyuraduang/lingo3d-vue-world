@@ -10,7 +10,7 @@ const progress = usePreload([
   "skybox.jpg",
   "map.glb",
   ...getRoleModel(),
-], "55.4mb")
+], "43.1mb")
 </script>
 <template>
   <Loading v-if="progress !== 100" :progress="progress" />

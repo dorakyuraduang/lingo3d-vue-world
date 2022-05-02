@@ -9,16 +9,16 @@
   <Keyboard @key-press="handleKeyPress" @key-up="handleKeyUp" @key-down="handleKeyDown" />
   <template v-if="userStore.isMobile">
     <div class="chat mobileBtn" circle @touchstart="chatShow = !chatShow">
-      <img src="icon/chat.png" alt="">
+      <img :src="getImages('chat')" alt="">
     </div>
     <div class="run mobileBtn" circle @touchstart="send('KEY_SHIFT_DOWN')">
-      <img src="icon/run.png" alt="">
+      <img :src="getImages('run')"  alt="">
     </div>
     <div class="jump mobileBtn" circle @touchstart="send('KEY_SPACE_DOWN')">
-      <img src="icon/jump.png" alt="">
+      <img :src="getImages('jump')"  alt="">
     </div>
     <div class="red mobileBtn" circle @touchstart="recStart" @touchend="recStop()">
-      <img src="icon/red.png" alt="">
+      <img :src="getImages('red')"  alt="">
     </div>
   </template>
   <Mouse v-if="!userStore.isMobile" @click="send('SHOOT')"></Mouse>
@@ -62,6 +62,9 @@ watchEffect(() => {
     console.log('你死了')
   }
 })
+const getImages=(name:string)=>{
+  return new URL(`../../public/icon/${name}.png`, import.meta.url).href
+}
 const updateState = setInterval(() => {
   socket.emit('update', {
     x: model.value!.x,

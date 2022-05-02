@@ -7,7 +7,7 @@
       </div>
       <div>{{ message }}</div>
     </div>
-     <img v-show="isRed"  src="icon/red.png"  style="width:50px;margin-bottom:10px;" />
+     <img v-show="isRed"  :src="getImageUrl('red')"  style="width:50px;margin-bottom:10px;" />
     <p class="name">{{ name }}</p>
   </div>
 </template>
@@ -19,6 +19,9 @@ const { name,message,isRed} = defineProps({
   isRed:Boolean
 })
 const userBox = ref()
+function getImageUrl(name:string) {
+  return new URL(`../../public/icon/${name}.png`, import.meta.url).href
+}
 const parentRef = inject<Ref<any> | undefined>("parent", undefined)
 watchEffect(() => {
   if (userBox.value) {
